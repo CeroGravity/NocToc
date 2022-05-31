@@ -4,6 +4,8 @@ import { baseUrl } from '../constants/movie'
 import { Movie } from '../typings'
 import { FaPlay } from 'react-icons/fa'
 import { InformationCircleIcon } from '@heroicons/react/solid'
+import { modalState, movieState } from '../atoms/modalAtom'
+import { useRecoilState } from 'recoil'
 
 interface Props {
   netflixOriginals: Movie[]
@@ -11,6 +13,8 @@ interface Props {
 
 function Banner({ netflixOriginals }: Props) {
   const [movie, setMovie] = useState<Movie | null>(null)
+  const [showModal, setShowModal] = useRecoilState(modalState)
+  const [currentMovie, setCurrentMovie] = useRecoilState(movieState)
 
   useEffect(() => {
     setMovie(
@@ -18,14 +22,12 @@ function Banner({ netflixOriginals }: Props) {
     )
   }, [netflixOriginals])
 
-  console.log(movie)
-
   return (
     <div className="flex flex-col space-y-2 py-16 md:space-y-4 lg:h-[65vh] lg:justify-end lg:pb-12">
-      <div className="absolute left-0 top-0 h-[95vh] w-screen -z-10">
+      <div className="absolute top-0 left-0 -z-10 h-[95vh] w-screen">
         <Image
-          src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
           layout="fill"
+          src={`${baseUrl}${movie?.backdrop_path || movie?.poster_path}`}
           objectFit="cover"
         />
       </div>
@@ -38,10 +40,19 @@ function Banner({ netflixOriginals }: Props) {
       </p>
 
       <div className="flex space-x-3">
+        {/* Play Button -- No Functionality */}
         <button className="bannerButton bg-white text-black">
           <FaPlay className="h-4 w-4 text-black md:h-7 md:w-7" /> Play
         </button>
-        <button className="bannerButton bg-[gray]/70">
+
+        {/* More Info Button -- Plays Trailer*/}
+        <button
+          className="bannerButton bg-[gray]/70"
+          onClick={() => {
+            setCurrentMovie(movie)
+            setShowModal(true)
+          }}
+        >
           More Info <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
         </button>
       </div>
