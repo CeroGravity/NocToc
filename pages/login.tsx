@@ -36,7 +36,7 @@ function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Image
-        src="/hero-background.jpg"
+        src="https://r4.wallpaperflare.com/wallpaper/135/692/935/astronaut-space-black-background-artwork-hd-wallpaper-7866ed583040dc28909c514e8812149a.jpg"
         layout="fill"
         className="-z-10 !hidden opacity-60 sm:!inline"
         objectFit="cover"
@@ -93,7 +93,7 @@ function Login() {
           Sign In
         </button>
         <div className="text-[gray]">
-          New to Netflix?{' '}
+          New to NocToc?{' '}
           <button
             className="cursor-pointer text-white hover:underline"
             onClick={() => setLogin(false)}
