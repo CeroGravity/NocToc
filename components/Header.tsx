@@ -1,12 +1,10 @@
 import Image from 'next/image'
 import { BellIcon, SearchIcon } from '@heroicons/react/solid'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import useAuth from '../hooks/useAuth'
+import Avatar from './Avatar'
 
 function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const { logout } = useAuth()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,12 +58,9 @@ function Header() {
         <p className="hidden lg:inline cursor-progress">Kids</p>
         <BellIcon className="h-6 w-6 cursor-pointer" />
         {/* <Link href="/account"> */}
-        <img
-          onClick={logout}
-          src="/avatar.png"
-          alt="avatar_image"
-          className="cursor-pointer rounded-lg h-8 w-8"
-        />
+        <div className=" h-12 w-12 relative right-0 mr-6 lg:mr-8 border-[#ec8200] border-2 rounded-full">
+          <Avatar logoutOnPress />
+        </div>
         {/* </Link> */}
       </div>
     </header>

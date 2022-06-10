@@ -21,7 +21,6 @@ function Login() {
   } = useForm<Inputs>()
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data)
     if (login) {
       await signIn(data.email, data.password)
     } else {
@@ -36,7 +35,7 @@ function Login() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Image
-        src="https://r4.wallpaperflare.com/wallpaper/135/692/935/astronaut-space-black-background-artwork-hd-wallpaper-7866ed583040dc28909c514e8812149a.jpg"
+        src="https://i.postimg.cc/QdbqZyPG/vhscity.gif"
         layout="fill"
         className="-z-10 !hidden opacity-60 sm:!inline"
         objectFit="cover"

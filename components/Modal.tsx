@@ -19,8 +19,6 @@ function Modal() {
   const [movie, setMovie] = useRecoilState(movieState)
   const [trailer, setTrailer] = useState('')
   const [genres, setGenres] = useState<Genre[]>([])
-  const [muted, setMuted] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(true)
 
   useEffect(() => {
     if (!movie) return
@@ -54,18 +52,27 @@ function Modal() {
   }
 
   return (
+    // {TODO: Style modal with a banner and an addList button beside the close}
     <MuiModal
       open={showModal}
       onClose={handleClose}
       className="fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide"
     >
       <>
-        <button
-          onClick={handleClose}
-          className="modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg-[#181818] hover:text-[#ec8200]"
-        >
-          <XIcon className="h-6 w-6" />
-        </button>
+        <div className="flex items-center bg-[#141414] text-[#f9f9f9] p-3.5">
+          <span className="font-semibold text-[#ec8200]">
+            {movie?.title || movie?.name || movie?.original_name}
+          </span>
+          <button className="modalButton absolute right-16 border-none cursor-pointer w-8 h-8 flex justify-center items-center rounded-full opacity-50 hover:opacity-75 !z-40 bg-[#181818] hover:text-[#ec8200] transition duration-200 ease-out hover:scale-105">
+            <PlusIcon className="h-6 w-6" />
+          </button>
+          <button
+            className="modalButton absolute right-4 border-none cursor-pointer w-8 h-8 flex justify-center items-center rounded-full opacity-50 hover:opacity-75 !z-40 bg-[#181818] hover:text-[#ec8200] transition duration-200 ease-out hover:scale-105"
+            onClick={handleClose}
+          >
+            <XIcon className="h-6 w-6" />
+          </button>
+        </div>
 
         <div className="relative pt-[56.25%]">
           <ReactPlayer
@@ -76,45 +83,11 @@ function Modal() {
             width="100%"
             height="100%"
             style={{ position: 'absolute', top: '0', left: '0' }}
-            playing={isPlaying}
-            muted={muted}
+            playing
+            controls
           />
-
-          <div className="absolute bottom-10 flex w-full items-center justify-between px-10">
-            <div className="flex space-x-2">
-              <button
-                className="modalButton hover:text-[#ec8200]"
-                onClick={() => setIsPlaying(!isPlaying)}
-              >
-                {isPlaying ? (
-                  <PauseIcon className="h-7 w-7" />
-                ) : (
-                  <FaPlay className="h-7 w-7 px-1.5" />
-                )}
-              </button>
-
-              <button className="modalButton hover:text-[#ec8200]">
-                <PlusIcon className="h-7 w-7" />
-              </button>
-
-              <button className="modalButton hover:text-[#ec8200]">
-                <ThumbUpIcon className="h-7 w-7" />
-              </button>
-            </div>
-            <button
-              className="modalButton hover:text-[#ec8200]"
-              onClick={() => setMuted(!muted)}
-            >
-              {muted ? (
-                <VolumeOffIcon className="h-6 w-6" />
-              ) : (
-                <VolumeUpIcon className="h-6 w-6" />
-              )}
-            </button>
-          </div>
         </div>
-
-        <div className="flex space-x-16 rounded-b-md bg-[#181818] px-10 py-8">
+        <div className="flex space-x-16 rounded-b-md bg-[#141414] px-10 py-8">
           <div className="space-y-6 text-lg">
             <div className="flex items-center space-x-2 text-sm">
               <p className="font-semibold text-green-400">
