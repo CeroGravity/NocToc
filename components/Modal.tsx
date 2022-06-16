@@ -1,13 +1,17 @@
+import { withTheme } from '@emotion/react'
 import { VolumeOffIcon } from '@heroicons/react/outline'
 import {
+  CheckIcon,
   PauseIcon,
   PlusIcon,
   ThumbUpIcon,
   VolumeUpIcon,
   XIcon,
 } from '@heroicons/react/solid'
+import { duration } from '@mui/material'
 import MuiModal from '@mui/material/Modal'
 import { useEffect, useState } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 import { FaPlay } from 'react-icons/fa'
 import ReactPlayer from 'react-player/lazy'
 import { useRecoilState, useRecoilValue } from 'recoil'
@@ -18,17 +22,26 @@ function Modal() {
   const [showModal, setShowModal] = useRecoilState(modalState)
   const [movie, setMovie] = useRecoilState(movieState)
   const [trailer, setTrailer] = useState('')
+  const [addedToList, setAddedToList] = useState(false)
   const [genres, setGenres] = useState<Genre[]>([])
+
+  const toastStyle = {
+    background: 'white',
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: '16px',
+    padding: '15px',
+    borderRadius: '9999px',
+    maxWidth: '1000px'
+  }
 
   useEffect(() => {
     if (!movie) return
 
     async function fetchMovie() {
       const data = await fetch(
-        `https://api.themoviedb.org/3/${
-          movie?.media_type === 'tv' ? 'tv' : 'movie'
-        }/${movie?.id}?api_key=${
-          process.env.NEXT_PUBLIC_API_KEY
+        `https://api.themoviedb.org/3/${movie?.media_type === 'tv' ? 'tv' : 'movie'
+        }/${movie?.id}?api_key=${process.env.NEXT_PUBLIC_API_KEY
         }&language=en-US&append_to_response=videos`
       ).then((response) => response.json())
 
@@ -47,31 +60,49 @@ function Modal() {
     fetchMovie()
   }, [movie])
 
+  const handleList = () => {
+    //TODO: Add user myList functionality to database
+    setAddedToList(!addedToList)
+    if (addedToList) {
+      toast(`${movie?.title || movie?.name || movie?.original_name} has been removed from My List`, { duration: 8000, style: toastStyle })
+    } else {
+      toast(`${movie?.title || movie?.name || movie?.original_name} has been added to My List`, { duration: 8000, style: toastStyle })
+    }
+  }
+
   const handleClose = () => {
     setShowModal(false)
   }
 
   return (
-    // {TODO: Style modal with a banner and an addList button beside the close}
     <MuiModal
       open={showModal}
       onClose={handleClose}
       className="fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide"
     >
       <>
+        <Toaster position='bottom-center' />
         <div className="flex items-center bg-[#141414] text-[#f9f9f9] p-3.5">
           <span className="font-semibold text-[#ec8200]">
             {movie?.title || movie?.name || movie?.original_name}
           </span>
-          <button className="modalButton absolute right-16 border-none cursor-pointer w-8 h-8 flex justify-center items-center rounded-full opacity-50 hover:opacity-75 !z-40 bg-[#181818] hover:text-[#ec8200] transition duration-200 ease-out hover:scale-105">
-            <PlusIcon className="h-6 w-6" />
-          </button>
-          <button
-            className="modalButton absolute right-4 border-none cursor-pointer w-8 h-8 flex justify-center items-center rounded-full opacity-50 hover:opacity-75 !z-40 bg-[#181818] hover:text-[#ec8200] transition duration-200 ease-out hover:scale-105"
-            onClick={handleClose}
-          >
-            <XIcon className="h-6 w-6" />
-          </button>
+          <div className='absolute right-4 flex items-center space-x-3'>
+            <button className="modalButton border-none cursor-pointer w-8 h-8 flex justify-center items-center rounded-full opacity-50 hover:opacity-75 !z-40 bg-[#181818] hover:text-[#ec8200] transition duration-200 ease-out hover:scale-105" onClick={handleList}>
+              {
+                addedToList ? (
+                  <CheckIcon className="h-6 w-6" />
+                ) : (
+                  <PlusIcon className="h-6 w-6" />
+                )
+              }
+            </button>
+            <button
+              className="modalButton  border-none cursor-pointer w-8 h-8 flex justify-center items-center rounded-full opacity-50 hover:opacity-75 !z-40 bg-[#181818] hover:text-[#ec8200] transition duration-200 ease-out hover:scale-105"
+              onClick={handleClose}
+            >
+              <XIcon className="h-6 w-6" />
+            </button>
+          </div>
         </div>
 
         <div className="relative pt-[56.25%]">
