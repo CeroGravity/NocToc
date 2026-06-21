@@ -33,6 +33,7 @@ export async function Banner() {
 
   return (
     <BannerMedia
+      movie={featured}
       title={title}
       overview={featured.overview}
       backdrop={backdrop}

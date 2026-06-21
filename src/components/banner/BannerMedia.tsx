@@ -4,8 +4,11 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Play, Info, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useModalStore } from "@/store/useModalStore";
+import type { Movie } from "@/types/tmdb";
 
 interface BannerMediaProps {
+  movie: Movie;
   title: string;
   overview: string;
   backdrop: string | null;
@@ -13,6 +16,7 @@ interface BannerMediaProps {
 }
 
 export function BannerMedia({
+  movie,
   title,
   overview,
   backdrop,
@@ -20,6 +24,7 @@ export function BannerMedia({
 }: BannerMediaProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
+  const openModal = useModalStore((s) => s.openModal);
 
   const toggleMute = () => {
     const v = videoRef.current;
@@ -67,10 +72,14 @@ export function BannerMedia({
           {overview}
         </p>
         <div className="flex items-center gap-3 pt-2">
-          <Button className="gap-2 bg-white font-semibold text-black hover:bg-white/85">
+          <Button
+            onClick={() => openModal(movie)}
+            className="gap-2 bg-white font-semibold text-black hover:bg-white/85"
+          >
             <Play className="h-5 w-5 fill-black" /> Play
           </Button>
           <Button
+            onClick={() => openModal(movie)}
             variant="secondary"
             className="gap-2 bg-white/20 font-semibold text-white backdrop-blur hover:bg-white/30"
           >
