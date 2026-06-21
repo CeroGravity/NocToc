@@ -1,19 +1,12 @@
 import "server-only";
 import type { Movie, TMDBListResponse, VideosResponse } from "@/types/tmdb";
 
+export { tmdbImage } from "./images";
+
 const BASE_URL = "https://api.themoviedb.org/3";
-const IMAGE_BASE = "https://image.tmdb.org/t/p";
 const API_KEY = process.env.TMDB_API_KEY;
 
 export const isTmdbConfigured = Boolean(API_KEY);
-
-export function tmdbImage(
-  path: string | null,
-  size: "w300" | "w500" | "w780" | "w1280" | "original" = "w500"
-): string | null {
-  if (!path) return null;
-  return `${IMAGE_BASE}/${size}${path}`;
-}
 
 async function tmdbFetch<T>(
   endpoint: string,
