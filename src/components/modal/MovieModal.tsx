@@ -1,7 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import Image from "next/image";
 import { Check, Plus } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useModalStore } from "@/store/useModalStore";
@@ -9,11 +7,7 @@ import { useMyList } from "@/hooks/useMyList";
 import { resolveTrailer } from "@/lib/trailers";
 import { tmdbImage } from "@/lib/images";
 import { genreNames } from "@/lib/genres";
-
-const VideoPlayer = dynamic(
-  () => import("./VideoPlayer").then((m) => m.VideoPlayer),
-  { ssr: false }
-);
+import { ModalMedia } from "./ModalMedia";
 
 export function MovieModal() {
   const { isOpen, movie, closeModal } = useModalStore();
@@ -22,7 +16,7 @@ export function MovieModal() {
   if (!movie) return null;
 
   const title = movie.title ?? movie.name ?? "Untitled";
-  const trailer = resolveTrailer(movie.id);
+  const localTrailer = resolveTrailer(movie.id);
   const backdrop = tmdbImage(movie.backdrop_path ?? movie.poster_path, "w1280");
   const year = (movie.release_date ?? movie.first_air_date ?? "").slice(0, 4);
   const genres = genreNames(movie.genre_ids ?? []);
@@ -33,21 +27,17 @@ export function MovieModal() {
       <DialogContent className="max-w-3xl overflow-hidden border-white/10 bg-surface-raised p-0 text-white">
         <DialogTitle className="sr-only">{title}</DialogTitle>
 
-        <div className="relative aspect-video w-full bg-black">
-          {trailer ? (
-            <VideoPlayer src={trailer} poster={backdrop ?? undefined} />
-          ) : backdrop ? (
-            <Image
-              src={backdrop}
-              alt={title}
-              fill
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          ) : (
-            <div className="h-full w-full bg-surface-overlay" />
-          )}
-        </div>
+        {/* Keyed on movie.id so the media area (and its trailer lookup) remounts
+            cleanly for each opened title. */}
+        {isOpen && (
+          <ModalMedia
+            key={movie.id}
+            movie={movie}
+            title={title}
+            localTrailer={localTrailer}
+            backdrop={backdrop}
+          />
+        )}
 
         <div className="space-y-4 p-6">
           <div className="flex items-start justify-between gap-4">
@@ -62,13 +52,9 @@ export function MovieModal() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <span className="font-semibold text-brand">
-              {movie.vote_average.toFixed(1)} ★
-            </span>
+            <span className="font-semibold text-brand">{movie.vote_average.toFixed(1)} ★</span>
             {year && <span className="text-white/60">{year}</span>}
-            {!!genres.length && (
-              <span className="text-white/60">{genres.join(" · ")}</span>
-            )}
+            {!!genres.length && <span className="text-white/60">{genres.join(" · ")}</span>}
           </div>
 
           <p className="text-sm leading-relaxed text-white/80">

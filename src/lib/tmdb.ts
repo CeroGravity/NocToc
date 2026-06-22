@@ -27,8 +27,16 @@ async function fetchList(endpoint: string): Promise<Movie[]> {
 
 export const tmdb = {
   trending: () => fetchList("/trending/all/week"),
+  trendingMovies: () => fetchList("/trending/movie/week"),
+  trendingTv: () => fetchList("/trending/tv/week"),
   netflixOriginals: () => fetchList("/discover/tv?with_networks=213"),
   topRated: () => fetchList("/movie/top_rated"),
+  popularMovies: () => fetchList("/movie/popular"),
+  upcoming: () => fetchList("/movie/upcoming"),
+  nowPlaying: () => fetchList("/movie/now_playing"),
+  popularTv: () => fetchList("/tv/popular"),
+  topRatedTv: () => fetchList("/tv/top_rated"),
+  onTheAir: () => fetchList("/tv/on_the_air"),
   action: () => fetchList("/discover/movie?with_genres=28"),
   comedy: () => fetchList("/discover/movie?with_genres=35"),
   horror: () => fetchList("/discover/movie?with_genres=27"),

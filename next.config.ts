@@ -13,7 +13,7 @@ const csp = [
   "media-src 'self' blob:",
   "font-src 'self'",
   "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com",
-  `frame-src 'self' https://${FIREBASE_AUTH_DOMAIN} https://apis.google.com`,
+  `frame-src 'self' https://${FIREBASE_AUTH_DOMAIN} https://apis.google.com https://www.youtube-nocookie.com https://www.youtube.com`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
