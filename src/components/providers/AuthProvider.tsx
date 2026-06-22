@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, isConfigured } from "@/lib/firebase";
+import { auth } from "@/lib/firebase";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -10,7 +10,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Firebase not configured (no env keys yet): stop blocking the app.
-    if (!isConfigured) {
+    // Guarding on `auth` (not the boolean flag) lets TS narrow it to non-undefined.
+    if (!auth) {
       setInitializing(false);
       return;
     }

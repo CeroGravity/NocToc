@@ -1,6 +1,10 @@
 import { getApp, getApps, initializeApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
-import { getFirestore, type Firestore } from "firebase/firestore";
+import {
+  initializeFirestore,
+  getFirestore,
+  type Firestore,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,19 +15,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Guard initialization: when the env config is absent (e.g. during a build
-// before keys are provided, or static prerendering), skip init so module load
-// never throws auth/invalid-api-key. Once NEXT_PUBLIC_FIREBASE_API_KEY is set,
-// init runs normally with no further code changes.
-const isConfigured = Boolean(firebaseConfig.apiKey);
+export const isFirebaseConfigured = Boolean(firebaseConfig.apiKey);
 
-const app: FirebaseApp | undefined = isConfigured
-  ? getApps().length
-    ? getApp()
-    : initializeApp(firebaseConfig)
-  : undefined;
+let app: FirebaseApp | undefined;
+let auth: Auth | undefined;
+let db: Firestore | undefined;
 
-const auth = app ? getAuth(app) : (undefined as unknown as Auth);
-const db = app ? getFirestore(app) : (undefined as unknown as Firestore);
+if (isFirebaseConfigured) {
+  app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  try {
+    db = initializeFirestore(app, { ignoreUndefinedProperties: true });
+  } catch {
+    db = getFirestore(app);
+  }
+}
 
-export { app, auth, db, isConfigured };
+export { app, auth, db };
