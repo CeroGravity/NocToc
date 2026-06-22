@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Play, Info, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -32,6 +32,14 @@ export function BannerMedia({
     v.muted = !v.muted;
     setMuted(v.muted);
   };
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      v.pause();
+    }
+  }, []);
 
   return (
     <section className="relative h-[56vw] max-h-[85vh] min-h-[460px] w-full overflow-hidden">

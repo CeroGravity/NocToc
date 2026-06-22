@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Syne } from "next/font/google";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/providers/AuthProvider";
@@ -18,8 +18,20 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "NocToc",
-  description: "Your personal streaming universe",
+  title: { default: "NocToc", template: "%s · NocToc" },
+  description: "Your personal streaming universe — trailers, watchlist, no noise.",
+  applicationName: "NocToc",
+  openGraph: {
+    title: "NocToc",
+    description: "Your personal streaming universe.",
+    type: "website",
+  },
+};
+
+// themeColor moved to the viewport export — it is deprecated in `metadata`
+// as of Next.js 14 (would emit a build warning if left in metadata).
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
 };
 
 export default function RootLayout({
