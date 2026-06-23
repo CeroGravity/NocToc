@@ -27,7 +27,6 @@ async function fetchList(endpoint: string): Promise<Movie[]> {
 
 export const tmdb = {
   trending: () => fetchList("/trending/all/week"),
-  trendingMovies: () => fetchList("/trending/movie/week"),
   trendingTv: () => fetchList("/trending/tv/week"),
   netflixOriginals: () => fetchList("/discover/tv?with_networks=213"),
   topRated: () => fetchList("/movie/top_rated"),

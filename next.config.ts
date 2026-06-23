@@ -9,7 +9,7 @@ const csp = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' https://image.tmdb.org data: blob:",
+  "img-src 'self' https://image.tmdb.org https://api.dicebear.com data: blob:",
   "media-src 'self' blob:",
   "font-src 'self'",
   "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com",

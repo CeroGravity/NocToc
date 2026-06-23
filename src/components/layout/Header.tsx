@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
+import { Avatar } from "./Avatar";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -70,10 +71,8 @@ export function Header() {
         </button>
 
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 outline-none">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand text-sm font-semibold text-black">
-              {user?.email?.[0]?.toUpperCase() ?? "U"}
-            </div>
+          <DropdownMenuTrigger className="flex items-center gap-2 rounded-md outline-none ring-brand focus-visible:ring-2">
+            <Avatar size={32} />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
