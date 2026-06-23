@@ -76,10 +76,15 @@ export function Header() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
-            className="border-white/10 bg-surface-raised text-white"
+            className="w-64 border-white/10 bg-surface-raised text-white"
           >
-            <DropdownMenuItem className="text-xs text-white/50 focus:bg-transparent">
-              {user?.email ?? "Account"}
+            <DropdownMenuItem className="flex-col items-start gap-0.5 focus:bg-transparent">
+              <span className="text-[10px] uppercase tracking-wide text-white/40">
+                Signed in as
+              </span>
+              <span className="w-full truncate text-sm text-white">
+                {user?.email ?? "Account"}
+              </span>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-white/10" />
             <DropdownMenuItem

@@ -24,7 +24,7 @@ export function MovieModal() {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && closeModal()}>
-      <DialogContent className="max-w-3xl overflow-hidden border-white/10 bg-surface-raised p-0 text-white">
+      <DialogContent className="w-[95vw] max-w-5xl overflow-hidden border-white/10 bg-surface-raised p-0 text-white">
         <DialogTitle className="sr-only">{title}</DialogTitle>
 
         {/* Keyed on movie.id so the media area (and its trailer lookup) remounts
